@@ -307,7 +307,7 @@ class PainterController extends ValueNotifier<PainterControllerValue> {
   ///
   /// The size of the output image is controlled by [size].
   /// All drawables will be scaled according to that image size.
-  Future<ui.Image> renderImage(Size size) async {
+  Future<ui.Image> renderImage(Size size, {bool keepBackground = true}) async {
     final painterSize = painterKey.currentContext?.size;
 
     final imageSize = painterSize == null
@@ -323,7 +323,7 @@ class PainterController extends ValueNotifier<PainterControllerValue> {
     final painter = Painter(
       drawables: value.drawables,
       scale: imageSize,
-      background: value.background,
+      background: keepBackground ? value.background : null,
     );
     painter.paint(canvas, size);
     return await recorder.endRecording().toImage(size.width.floor(), size.height.floor());
